@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition of BST node
+struct TreeNode {
+    int val;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+// Create new node
+struct TreeNode* createNode(int val) {
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = val;
+    node->left = node->right = NULL;
+    return node;
+}
+
+// Insert into BST
+struct TreeNode* insertIntoBST(struct TreeNode* root, int val) {
+    if (root == NULL) return createNode(val);
+
+    if (val < root->val)
+        root->left = insertIntoBST(root->left, val);
+    else
+        root->right = insertIntoBST(root->right, val);
+
+    return root;
+}
+
+// Inorder traversal (sorted output)
+void inorder(struct TreeNode* root) {
+    if (root == NULL) return;
+    inorder(root->left);
+    printf("%d ", root->val);
+    inorder(root->right);
+}
+
+int main() {
+    int n, val, x;
+    struct TreeNode* root = NULL;
+
+    // Read number of nodes
+    scanf("%d", &n);
+
+    // Read BST values
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &x);
+        root = insertIntoBST(root, x);
+    }
+
+    // Read value to insert
+    scanf("%d", &val);
+
+    // Insert new value
+    root = insertIntoBST(root, val);
+
+    // Output inorder traversal
+    inorder(root);
+
+    return 0;
+}
