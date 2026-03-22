@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition of TreeNode
+struct TreeNode {
+    int val;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+// Create a new node
+struct TreeNode* createNode(int val) {
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = val;
+    node->left = node->right = NULL;
+    return node;
+}
+
+// Insert into BST
+struct TreeNode* insert(struct TreeNode* root, int val) {
+    if (root == NULL) return createNode(val);
+
+    if (val < root->val)
+        root->left = insert(root->left, val);
+    else
+        root->right = insert(root->right, val);
+
+    return root;
+}
+
+// Search in BST
+struct TreeNode* searchBST(struct TreeNode* root, int val) {
+    while (root != NULL) {
+        if (root->val == val)
+            return root;
+        else if (val < root->val)
+            root = root->left;
+        else
+            root = root->right;
+    }
+    return NULL;
+}
+
+// Inorder traversal
+void inorder(struct TreeNode* root) {
+    if (root == NULL) return;
+    inorder(root->left);
+    printf("%d ", root->val);
+    inorder(root->right);
+}
+
+// Main function
+int main() {
+    int n, val, x;
+    struct TreeNode* root = NULL;
+
+    // Input number of nodes
+    scanf("%d", &n);
+
+    // Input BST elements
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &x);
+        root = insert(root, x);
+    }
+
+    // Input value to search
+    scanf("%d", &val);
+
+    // Search
+    struct TreeNode* result = searchBST(root, val);
+
+    // Output
+    if (result == NULL) {
+        printf("NULL\n");
+    } else {
+        inorder(result);
+        printf("\n");
+    }
+
+    return 0;
+}
